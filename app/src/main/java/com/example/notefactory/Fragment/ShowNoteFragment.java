@@ -61,11 +61,12 @@ public class ShowNoteFragment extends Fragment {
         tv_note_body.setText(body);
         tv_noteTimestamp.setText(timestamp);
 
-        if (imagepath != null) {
+        if (!imagepath.equals("null")) {
             image_note.setVisibility(View.VISIBLE);
             image_note.setImageBitmap(BitmapFactory.decodeFile(imagepath));
         }else {
-            image_note.setVisibility(View.GONE);
+            image_note.setVisibility(View.VISIBLE);
+            image_note.setImageResource(R.drawable.ic_picture);
         }
 
         image_note.setOnTouchListener(new View.OnTouchListener() {
