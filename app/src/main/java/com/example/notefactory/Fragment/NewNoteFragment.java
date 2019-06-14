@@ -4,9 +4,13 @@ package com.example.notefactory.Fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +35,8 @@ public class NewNoteFragment extends Fragment {
 
     EditText edt_title,edt_body;
     TextView tv_save,tv_attach;
-    public static ImageView img_note;
+    ImageView img_note;
+    String pic_path;
 
     public NewNoteFragment() {
         // Required empty public constructor
@@ -76,7 +81,7 @@ public class NewNoteFragment extends Fragment {
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        getActivity().startActivityForResult(intent,1);
+        startActivityForResult(intent,1);
     }
 
     private void saveNote(String title,String body){
@@ -91,7 +96,7 @@ public class NewNoteFragment extends Fragment {
 
             db.execSQL("INSERT INTO " + SQLiteHelper.TABLE_NAME + " (" + SQLiteHelper.Column_TITLE + " ," +
                     SQLiteHelper.Column_BODY + " ," + SQLiteHelper.Column_Timestamp+" ," + SQLiteHelper.Column_Image+ " ) " +
-                    " VALUES(" +"\""+ title+"\"" + "," +"\""+ body+"\""+" , " +"\""+ timestamp+ "\""+" , "+"\""+MainActivity.pic_path+"\""+");");
+                    " VALUES(" +"\""+ title+"\"" + "," +"\""+ body+"\""+" , " +"\""+ timestamp+ "\""+" , "+"\""+pic_path+"\""+");");
             db.close();
 
             if (progressDialog.isShowing())
@@ -106,6 +111,24 @@ public class NewNoteFragment extends Fragment {
             if (progressDialog.isShowing())
                 progressDialog.dismiss();
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && data != null){
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            pic_path = cursor.getString(columnIndex);
+            img_note.setImageBitmap(BitmapFactory.decodeFile(pic_path));
+            cursor.close();
         }
     }
 }

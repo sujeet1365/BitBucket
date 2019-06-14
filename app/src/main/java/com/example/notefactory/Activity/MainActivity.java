@@ -4,30 +4,21 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.notefactory.Fragment.HomeFragment;
-import com.example.notefactory.Fragment.NewNoteFragment;
 import com.example.notefactory.R;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static String pic_path;
 
     public static FragmentManager fragmentManager;
     @SuppressLint("RestrictedApi")
@@ -48,24 +39,6 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
             return;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && data != null){
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            pic_path = cursor.getString(columnIndex);
-            NewNoteFragment.img_note.setImageBitmap(BitmapFactory.decodeFile(pic_path));
-            cursor.close();
         }
     }
 
