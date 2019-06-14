@@ -80,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
                     Uri uri = Uri.fromParts("package", "in.paymintz2p", null);
                     intent.setData(uri);
                     startActivity(intent);
-                } else {
-//                    DialogUtility.permissionsDialog1(StartActivity.this, Constants.PERMISSION_TITLE, Constants.PERMISSION_DESCRIPTION);
                 }
             }
         }

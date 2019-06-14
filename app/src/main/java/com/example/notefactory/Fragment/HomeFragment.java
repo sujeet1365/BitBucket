@@ -79,7 +79,6 @@ public class HomeFragment extends Fragment {
         SQLiteHelper sqLiteHelper = new SQLiteHelper(getContext());
         SQLiteDatabase db = sqLiteHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT "+SQLiteHelper.Column_Number+" , "+SQLiteHelper.Column_TITLE+" , "+SQLiteHelper.Column_BODY+" , "+SQLiteHelper.Column_Timestamp+" , "+SQLiteHelper.Column_Image+" FROM " + SQLiteHelper.TABLE_NAME,null);
-//        Cursor cursor = db.rawQuery("SELECT "+SQLiteHelper.Column_Number+" , "+SQLiteHelper.Column_TITLE+" , "+SQLiteHelper.Column_BODY+" , "+SQLiteHelper.Column_Timestamp+" , "+SQLiteHelper.Column_Image+" FROM " + SQLiteHelper.TABLE_NAME,null);
         while (cursor.moveToNext()){
             try {
 
